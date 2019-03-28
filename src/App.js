@@ -1,25 +1,38 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import SelectedEmployees from "./SelectedEmployee";
+import EmployeeSearch from "./EmployeeSearch";
+import logo from "./logo.svg";
+import "./App.css";
 
 class App extends Component {
+  state = {
+    selectedEmployees: []
+  };
+
+  removeEmployee = itemIndex => {
+    const filteredEmployees = this.state.selectedEmployees.filter(
+      (item, idx) => itemIndex != idx
+    );
+    this.setState({ selectedEmployees: filteredEmployees });
+  };
+
+  addEmployee = employee => {
+    const newEmployees = this.state.selectedEmployees.concat(employee);
+    this.setState({ selectedEmployees: newEmployees });
+  };
+
   render() {
+    const { selectedEmployees } = this.state;
+
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <div className="ui text container">
+          <SelectedEmployees
+            employees={selectedEmployees}
+            onEmployeeClick={this.removeEmployee}
+          />
+          <EmployeeSearch onEmployeeClick={this.addEmployee} />
+        </div>
       </div>
     );
   }
